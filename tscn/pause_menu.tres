@@ -1,0 +1,21 @@
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://ddvnkmk28qm7o"]
+
+[ext_resource type="Texture2D" uid="uid://ciye3fbu6j23o" path="res://assets/PNG/Default/Border/panel-border-016.png" id="1_nd8ux"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rtp88"]
+texture = ExtResource("1_nd8ux")
+texture_margin_left = 17.0
+texture_margin_top = 17.0
+texture_margin_right = 17.0
+texture_margin_bottom = 17.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kesg3"]
+bg_color = Color(0, 0, 0, 0)
+
+[resource]
+Button/styles/disabled = null
+Button/styles/focus = null
+Button/styles/hover = SubResource("StyleBoxTexture_rtp88")
+Button/styles/hover_pressed = null
+Button/styles/normal = SubResource("StyleBoxFlat_kesg3")
+Button/styles/pressed = null

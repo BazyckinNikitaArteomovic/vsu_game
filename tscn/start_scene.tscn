@@ -1,0 +1,125 @@
+[gd_scene load_steps=17 format=3 uid="uid://blvkgpake3yw7"]
+
+[ext_resource type="Script" path="res://tscn/start_scene.gd" id="1_haw4i"]
+[ext_resource type="Texture2D" uid="uid://csnvab2i0x023" path="res://assets/40edf17e-023b-4fc0-83e3-48298a8a80e2.png" id="2_5bbha"]
+[ext_resource type="Shader" path="res://shaders/blur.gdshader" id="3_qtli4"]
+[ext_resource type="Texture2D" uid="uid://c2y3h6p7cjf5m" path="res://5ad90087-9fc7-4566-bd58-8f5e94836fd2.png" id="4_7gjxy"]
+[ext_resource type="Theme" uid="uid://ddvnkmk28qm7o" path="res://tscn/pause_menu.tres" id="5_hd14q"]
+[ext_resource type="Texture2D" uid="uid://rgcdijbccb77" path="res://assets/buttons/play.png" id="6_hu7ca"]
+[ext_resource type="Texture2D" uid="uid://c0ptxbajp1ebw" path="res://assets/buttons/Group 5.png" id="7_vvkgh"]
+[ext_resource type="Texture2D" uid="uid://dpwxbc7a8yvux" path="res://assets/buttons/new game.png" id="8_tibl2"]
+[ext_resource type="Texture2D" uid="uid://delqgrobsftv" path="res://assets/buttons/Group 1.png" id="9_1duao"]
+[ext_resource type="Texture2D" uid="uid://ucbfw2uvpm7o" path="res://assets/buttons/load save.png" id="10_ied84"]
+[ext_resource type="Texture2D" uid="uid://u80xt2rlmxk0" path="res://assets/buttons/Group 2.png" id="11_g5tfg"]
+[ext_resource type="Texture2D" uid="uid://b1pnnsvqm4hcg" path="res://assets/buttons/options.png" id="12_4fhp3"]
+[ext_resource type="Texture2D" uid="uid://dsb1ivvfeqhyj" path="res://assets/buttons/Group 4.png" id="13_07gv4"]
+[ext_resource type="Texture2D" uid="uid://buj5yc5doia3" path="res://assets/buttons/quit game.png" id="14_5ci85"]
+[ext_resource type="Texture2D" uid="uid://d00imncpfov47" path="res://assets/buttons/Group 3.png" id="15_ma1jy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qnoyk"]
+shader = ExtResource("3_qtli4")
+shader_parameter/sigma = 3.3
+
+[node name="Start_scene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_haw4i")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -578.0
+offset_top = -325.0
+offset_right = 578.0
+offset_bottom = 325.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_5bbha")
+expand_mode = 3
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_qnoyk")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -578.0
+offset_top = -325.5
+offset_right = 578.0
+offset_bottom = 325.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_left = -475.0
+offset_top = -91.0
+offset_right = 483.0
+offset_bottom = 267.0
+texture = ExtResource("4_7gjxy")
+expand_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -108.5
+offset_top = -297.61
+offset_right = 108.5
+offset_bottom = -81.61
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("5_hd14q")
+theme_override_constants/separation = 15
+
+[node name="Play" type="TextureButton" parent="VBoxContainer"]
+texture_filter = 4
+layout_mode = 2
+texture_normal = ExtResource("6_hu7ca")
+texture_hover = ExtResource("7_vvkgh")
+stretch_mode = 3
+
+[node name="New_game" type="TextureButton" parent="VBoxContainer"]
+texture_filter = 4
+layout_mode = 2
+texture_normal = ExtResource("8_tibl2")
+texture_hover = ExtResource("9_1duao")
+stretch_mode = 3
+
+[node name="Load_save" type="TextureButton" parent="VBoxContainer"]
+texture_filter = 4
+layout_mode = 2
+texture_normal = ExtResource("10_ied84")
+texture_hover = ExtResource("11_g5tfg")
+stretch_mode = 3
+
+[node name="Options" type="TextureButton" parent="VBoxContainer"]
+texture_filter = 4
+layout_mode = 2
+texture_normal = ExtResource("12_4fhp3")
+texture_hover = ExtResource("13_07gv4")
+stretch_mode = 3
+
+[node name="Quit_game" type="TextureButton" parent="VBoxContainer"]
+texture_filter = 4
+layout_mode = 2
+texture_normal = ExtResource("14_5ci85")
+texture_hover = ExtResource("15_ma1jy")
+stretch_mode = 3
+
+[connection signal="pressed" from="VBoxContainer/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="VBoxContainer/Quit_game" to="." method="_on_quit_game_pressed"]

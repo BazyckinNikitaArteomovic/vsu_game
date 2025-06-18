@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://j3knfpu4x3m1"]
+
+[ext_resource type="Script" path="res://tscn/LevelGenerator.gd" id="1_4wb87"]
+[ext_resource type="TileSet" uid="uid://cfagnp78dwwy3" path="res://tiles/main.tres" id="2_xfqf0"]
+[ext_resource type="PackedScene" uid="uid://bshsot6yjt17f" path="res://tscn/character.tscn" id="3_3sjxc"]
+
+[node name="ProceduralLevel" type="Node2D"]
+script = ExtResource("1_4wb87")
+
+[node name="TileMap" type="TileMap" parent="."]
+scale = Vector2(2, 2)
+tile_set = ExtResource("2_xfqf0")
+format = 2
+layer_1/name = "Layer1"
+layer_1/z_index = 1
+layer_2/name = "Layer2"
+layer_2/z_index = 2
+
+[node name="Character" parent="." instance=ExtResource("3_3sjxc")]

@@ -1,0 +1,154 @@
+[gd_scene load_steps=14 format=3 uid="uid://5j2tvu5ygb04"]
+
+[ext_resource type="Script" path="res://tscn/bg.gd" id="1_4j7gq"]
+[ext_resource type="Texture2D" uid="uid://dgk70gnkiehjf" path="res://assets/Free Pixel Art Forest/PNG/Background layers/Layer_0011_0.png" id="2_ak3vo"]
+[ext_resource type="Texture2D" uid="uid://cii4ydywh8jmc" path="res://assets/Free Pixel Art Forest/PNG/Background layers/Layer_0010_1.png" id="3_ga4km"]
+[ext_resource type="Texture2D" uid="uid://uyhobmj542gm" path="res://assets/Free Pixel Art Forest/PNG/Background layers/Layer_0009_2.png" id="4_wqfqd"]
+[ext_resource type="Texture2D" uid="uid://bab5laccmp134" path="res://assets/Free Pixel Art Forest/PNG/Background layers/Layer_0008_3.png" id="5_ipyye"]
+[ext_resource type="Texture2D" uid="uid://2jeas5dvwvgk" path="res://assets/Free Pixel Art Forest/PNG/Background layers/Layer_0007_Lights.png" id="6_nkkgm"]
+[ext_resource type="Texture2D" uid="uid://d3k64cogdt3cm" path="res://assets/Free Pixel Art Forest/PNG/Background layers/Layer_0006_4.png" id="7_vchpx"]
+[ext_resource type="Texture2D" uid="uid://bp3kocfqo1frf" path="res://assets/Free Pixel Art Forest/PNG/Background layers/Layer_0005_5.png" id="8_my041"]
+[ext_resource type="Texture2D" uid="uid://clc8omatg0rgw" path="res://assets/Free Pixel Art Forest/PNG/Background layers/Layer_0004_Lights.png" id="9_5n0r3"]
+[ext_resource type="Texture2D" uid="uid://drkoyu2npkrcm" path="res://assets/Free Pixel Art Forest/PNG/Background layers/Layer_0003_6.png" id="10_ps1xn"]
+[ext_resource type="Texture2D" uid="uid://ba6lk8hv0gtsy" path="res://assets/Free Pixel Art Forest/PNG/Background layers/Layer_0002_7.png" id="11_o400d"]
+[ext_resource type="Texture2D" uid="uid://b0vvv6d2nttf8" path="res://assets/Free Pixel Art Forest/PNG/Background layers/Layer_0001_8.png" id="12_s6ge8"]
+[ext_resource type="Texture2D" uid="uid://b48sc6lreyl0s" path="res://assets/Free Pixel Art Forest/PNG/Background layers/Layer_0000_9.png" id="13_34b3r"]
+
+[node name="BG" type="ParallaxBackground"]
+offset = Vector2(0, -174.715)
+transform = Transform2D(1, 0, 0, 1, 0, -174.715)
+script = ExtResource("1_4j7gq")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.5, 0.5)
+motion_mirroring = Vector2(928, 0)
+
+[node name="Sky" type="Sprite2D" parent="ParallaxLayer"]
+texture_repeat = 2
+texture = ExtResource("2_ak3vo")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1856, 793)
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.57, 0.57)
+motion_mirroring = Vector2(928, 0)
+
+[node name="Far-mountains" type="Sprite2D" parent="ParallaxLayer2"]
+texture_repeat = 2
+texture = ExtResource("3_ga4km")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1856, 793)
+
+[node name="ParallaxLayer4" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.605, 0.605)
+motion_mirroring = Vector2(928, 0)
+
+[node name="Middle-mountains" type="Sprite2D" parent="ParallaxLayer4"]
+texture_repeat = 2
+texture = ExtResource("4_wqfqd")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1856, 793)
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.62, 0.62)
+motion_mirroring = Vector2(928, 0)
+
+[node name="Far-trees" type="Sprite2D" parent="ParallaxLayer3"]
+texture_repeat = 2
+texture = ExtResource("5_ipyye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1856, 793)
+
+[node name="ParallaxLayer5" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.695, 0.695)
+motion_mirroring = Vector2(928, 0)
+
+[node name="Myst" type="Sprite2D" parent="ParallaxLayer5"]
+visible = false
+texture_repeat = 2
+texture = ExtResource("6_nkkgm")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1856, 793)
+
+[node name="ParallaxLayer6" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.66, 0.66)
+motion_mirroring = Vector2(928, 0)
+
+[node name="Near-trees" type="Sprite2D" parent="ParallaxLayer6"]
+texture_repeat = 2
+texture = ExtResource("7_vchpx")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1856, 793)
+
+[node name="ParallaxLayer7" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.695, 0.695)
+motion_mirroring = Vector2(928, 0)
+
+[node name="Near-trees" type="Sprite2D" parent="ParallaxLayer7"]
+texture_repeat = 2
+texture = ExtResource("8_my041")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1856, 793)
+
+[node name="ParallaxLayer8" type="ParallaxLayer" parent="."]
+visible = false
+motion_scale = Vector2(0.875, 0.875)
+motion_mirroring = Vector2(928, 0)
+
+[node name="Near-trees" type="Sprite2D" parent="ParallaxLayer8"]
+visible = false
+texture_repeat = 2
+texture = ExtResource("9_5n0r3")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1856, 793)
+
+[node name="ParallaxLayer9" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.74, 0.74)
+motion_mirroring = Vector2(928, 0)
+
+[node name="Near-trees" type="Sprite2D" parent="ParallaxLayer9"]
+texture_repeat = 2
+texture = ExtResource("10_ps1xn")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1856, 793)
+
+[node name="ParallaxLayer10" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.815, 0.815)
+motion_mirroring = Vector2(928, 0)
+
+[node name="Near-trees" type="Sprite2D" parent="ParallaxLayer10"]
+texture_repeat = 2
+texture = ExtResource("11_o400d")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1856, 793)
+
+[node name="ParallaxLayer11" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.955, 0.955)
+motion_mirroring = Vector2(928, 0)
+
+[node name="Near-trees" type="Sprite2D" parent="ParallaxLayer11"]
+texture_repeat = 2
+texture = ExtResource("12_s6ge8")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1856, 793)
+
+[node name="ParallaxLayer12" type="ParallaxLayer" parent="."]
+motion_mirroring = Vector2(928, 0)
+
+[node name="Near-trees" type="Sprite2D" parent="ParallaxLayer12"]
+texture_repeat = 2
+texture = ExtResource("13_34b3r")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1856, 793)

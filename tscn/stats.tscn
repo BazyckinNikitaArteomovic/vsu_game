@@ -1,0 +1,58 @@
+[gd_scene load_steps=5 format=3 uid="uid://ho5is84b8sv7"]
+
+[ext_resource type="Script" path="res://tscn/stats.gd" id="1_wbr6a"]
+[ext_resource type="Texture2D" uid="uid://85too0lb2xne" path="res://assets/HP/Borders/Border_Black.png" id="2_6887v"]
+[ext_resource type="Texture2D" uid="uid://bxw4q2medtwt2" path="res://assets/Shikashi's Fantasy Icons Pack v2/heal.png" id="4_8xmlx"]
+[ext_resource type="Texture2D" uid="uid://bqhfu1dedxwi6" path="res://assets/HP/Style_1_white.png" id="5_qib6s"]
+
+[node name="Stats" type="CanvasLayer"]
+script = ExtResource("1_wbr6a")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+texture_filter = 4
+offset_left = 293.0
+offset_top = 629.295
+offset_right = 993.0
+offset_bottom = 638.295
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 6
+text = "1 ур."
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="HBoxContainer"]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+value = 100.0
+nine_patch_stretch = true
+stretch_margin_left = 2
+stretch_margin_top = 2
+stretch_margin_right = 2
+stretch_margin_bottom = 1
+texture_over = ExtResource("2_6887v")
+texture_progress = ExtResource("5_qib6s")
+tint_progress = Color(1, 1, 1, 0.513726)
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+offset_left = 12.0
+offset_top = 72.0
+offset_right = 712.0
+offset_bottom = 105.0
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("4_8xmlx")
+expand_mode = 3
+
+[node name="heals" type="Label" parent="HBoxContainer2"]
+texture_filter = 4
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "0"
+
+[node name="Health" type="HBoxContainer" parent="."]
+offset_left = 12.0
+offset_top = 13.0
+offset_right = 609.0
+offset_bottom = 61.0
+theme_override_constants/separation = 0

@@ -1,0 +1,49 @@
+[gd_scene load_steps=4 format=3 uid="uid://cf1a76wvlspqw"]
+
+[ext_resource type="Script" path="res://tscn/enemy_logic.gd" id="1_hjwl3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ic6jv"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8bjc1"]
+
+[node name="EnemyLogic" type="Node2D"]
+script = ExtResource("1_hjwl3")
+
+[node name="TimerWandering" type="Timer" parent="."]
+one_shot = true
+
+[node name="TimerIdle" type="Timer" parent="."]
+one_shot = true
+
+[node name="ExitZone" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitZone"]
+scale = Vector2(26.97, 26.97)
+shape = SubResource("CircleShape2D_ic6jv")
+
+[node name="AttackZone" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackZone"]
+scale = Vector2(1.795, 1.795)
+shape = SubResource("CapsuleShape2D_8bjc1")
+
+[node name="DetectZone" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectZone"]
+scale = Vector2(8.925, 8.925)
+shape = SubResource("CircleShape2D_ic6jv")
+
+[node name="RayCastR" type="RayCast2D" parent="."]
+position = Vector2(21.04, 0)
+
+[node name="RayCastL" type="RayCast2D" parent="."]
+position = Vector2(-22.78, 0)
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[connection signal="timeout" from="TimerWandering" to="." method="_on_timer_wandering_timeout"]
+[connection signal="timeout" from="TimerIdle" to="." method="_on_timer_idle_timeout"]
+[connection signal="body_exited" from="ExitZone" to="." method="_on_exit_zone_body_exited"]
+[connection signal="body_entered" from="AttackZone" to="." method="_on_attack_zone_body_entered"]
+[connection signal="body_exited" from="AttackZone" to="." method="_on_attack_zone_body_exited"]
+[connection signal="body_entered" from="DetectZone" to="." method="_on_detect_zone_body_entered"]
