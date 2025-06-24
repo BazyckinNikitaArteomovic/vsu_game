@@ -1,4 +1,4 @@
 extends Node
-class_name DirectionHelper  # Уникальное имя класса
+class_name DirectionHelper 
 
-enum Directions { UP, DOWN, LEFT, RIGHT }  # Переименованный enum
+enum Directions { UP, DOWN, LEFT, RIGHT } 

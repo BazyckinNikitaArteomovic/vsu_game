@@ -61,12 +61,13 @@ func _process_region(node: RegionTree, depth: int):
 	
 	if _try_split(node, depth):
 		return
-	if _try_cut(node):
-		return
+	"""if _try_cut(node):
+		return"""
 	var strategy = _select_strategy(node.region)
 	if strategy:
 		print("Applying strategy: ", strategy.get_name())
 		_apply_strategy(strategy, node.region)
+		return
 	else:
 		print("No suitable strategy found for region: ", node.region.rect)
 
@@ -209,12 +210,15 @@ func _make_split_in_range(region: DirectedRegion, range_start: float, range_end:
 	
 	var traverse_direction = ((DirectionHelper.Directions.LEFT if enter_part_is_first else DirectionHelper.Directions.RIGHT) 
 	if is_horizontal_split else (DirectionHelper.Directions.UP if enter_part_is_first else DirectionHelper.Directions.DOWN))
-	if not enter_rect.has_point(enter_pos):
+	if not enter_rect.has_point(enter_pos + Vector2(-1 if enter_dir == DirectionHelper.Directions.RIGHT else 0, -1 if enter_dir == DirectionHelper.Directions.DOWN else 0) + Vector2(1 if enter_dir == DirectionHelper.Directions.LEFT else 0, 1 if enter_dir == DirectionHelper.Directions.UP else 0)):
 		printerr("Enter point not in enter_rect after split!", enter_rect, "  ", enter_pos)
-		printerr(exit_rect, is_horizontal_enter, is_horizontal_split)
+		printerr("Enter rect: ", enter_rect.position, enter_rect.size)
+		printerr("Enter point: ", enter_pos)
 		return null
-	if not exit_rect.has_point(region.exit_window.get_cells()[0]):
+	if not exit_rect.has_point(region.exit_window.get_cells()[0] + Vector2(-1 if region.exit_window.direction == DirectionHelper.Directions.RIGHT else 0, -1 if region.exit_window.direction == DirectionHelper.Directions.DOWN else 0) + Vector2(1 if region.exit_window.direction == DirectionHelper.Directions.LEFT else 0, 1 if region.exit_window.direction == DirectionHelper.Directions.UP else 0)):
 		printerr("Exit point not in exit_rect after split, is it in enter_rect: ", enter_rect.has_point(region.exit_window.get_cells()[0]))
+		printerr("Exit rect: ", exit_rect.position, exit_rect.size)
+		printerr("Exit window: ", region.exit_window.get_cells()[0])
 		return null
 	return SplitVariant.new(enter_rect, exit_rect, traverse_direction)
 	
@@ -296,7 +300,8 @@ func _try_cut_variant(node: RegionTree, variant: CutVariant) -> bool:
 	# Создаем новый регион с обновленными параметрами
 	var new_enter_point = node.region.enter_point.to_another_rect(variant.main_rect)
 	var new_exit_window = node.region.exit_window.to_another_rect(variant.main_rect)
-	
+	if (not new_exit_window) or (not new_enter_point):
+		return false
 	# Явно проверяем преобразование точек
 	if new_enter_point.rect != variant.main_rect or new_exit_window.rect != variant.main_rect:
 		printerr("ERROR: Point conversion failed!")
@@ -317,7 +322,6 @@ func _try_cut_variant(node: RegionTree, variant: CutVariant) -> bool:
 
 func _apply_strategy(strategy: FillStrategy, region: DirectedRegion):
 	var exit_point = strategy.fill(region, _current_components)
-	region.set_exit_point(exit_point)
 	_current_components.append(DebugRegionComponent.new(region, strategy.get_name()))
 
 func _get_split_variants(region: DirectedRegion) -> Array:

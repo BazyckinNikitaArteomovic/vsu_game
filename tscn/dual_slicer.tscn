@@ -1,6 +1,8 @@
-[gd_scene load_steps=45 format=3 uid="uid://d3xj054ingdm5"]
+[gd_scene load_steps=47 format=3 uid="uid://d3xj054ingdm5"]
 
+[ext_resource type="Script" path="res://tscn/dual_slicer.gd" id="1_i00m2"]
 [ext_resource type="Texture2D" uid="uid://c1yvhmw1w0j6g" path="res://assets/platno/mobs/Dual Slicer/Dual Slicer Sprite Sheet 36x25.png" id="1_i5bvi"]
+[ext_resource type="PackedScene" uid="uid://cf1a76wvlspqw" path="res://tscn/enemy_logic.tscn" id="2_s73uq"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6n5iw"]
 radius = 5.0
@@ -322,6 +324,7 @@ animations = [{
 }]
 
 [node name="dual slicer" type="CharacterBody2D"]
+script = ExtResource("1_i00m2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_6n5iw")
@@ -329,5 +332,7 @@ shape = SubResource("CapsuleShape2D_6n5iw")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(4.345, -2.875)
 sprite_frames = SubResource("SpriteFrames_3aqhx")
-animation = &"idle"
+animation = &"run"
 autoplay = "idle"
+
+[node name="EnemyLogic" parent="." instance=ExtResource("2_s73uq")]

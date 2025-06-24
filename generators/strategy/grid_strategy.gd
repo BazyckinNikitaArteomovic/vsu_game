@@ -2,8 +2,8 @@ class_name GridStrategy extends FillStrategy
 
 func fill(region: DirectedRegion, components: Array) -> DirectedPoint:
 	# Получаем необходимые данные из региона
-	var exit_point = region.get_exit_point()  # Получаем DirectedPoint
 	var exit_window = region.exit_window      # Получаем DirectedWindow
+	var exit_point = region.get_exit_point()
 
 	# Создаем PlatformGrid с корректными параметрами
 	var grid := PlatformGrid.new(
@@ -19,7 +19,6 @@ func fill(region: DirectedRegion, components: Array) -> DirectedPoint:
 
 	# Вызываем build() с обоими аргументами
 	var final_exit_point = grid.build(exit_point, exit_window, region.enter_point)
-	print(2)
 	var tile_size = WorldProperties.get_property("GRID_STEP")
 
 	for platform_rect in grid.get_platforms():
@@ -51,26 +50,26 @@ func _generate_wall_points(rect: Rect2) -> Array:
 	for dir in DirectionHelper.Directions:
 		match dir:
 			"UP":
-				var x = rect.position.x + platform_width
-				while x < rect.end.x - step:
+				var x = 0 + platform_width
+				while x < rect.size.x - step:
 					points.append(DirectedPoint.new(rect, DirectionHelper.Directions.UP, x))
 					x += step
 
 			"DOWN":
-				var x = rect.position.x + platform_width
-				while x < rect.end.x - step:
+				var x = 0 + platform_width
+				while x < rect.size.x - step:
 					points.append(DirectedPoint.new(rect, DirectionHelper.Directions.DOWN, x))
 					x += step
 
 			"LEFT":
-				var y = rect.position.y + platform_height
-				while y < rect.end.y - step:
+				var y = 0 + platform_height
+				while y < rect.size.y - step:
 					points.append(DirectedPoint.new(rect, DirectionHelper.Directions.LEFT, y))
 					y += step
 
 			"RIGHT":
-				var y = rect.position.y + platform_height
-				while y < rect.end.y - step:
+				var y = 0 + platform_height
+				while y < rect.size.y - step:
 					points.append(DirectedPoint.new(rect, DirectionHelper.Directions.RIGHT, y))
 					y += step
 

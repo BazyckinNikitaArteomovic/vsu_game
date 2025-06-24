@@ -72,11 +72,10 @@ func _create_grid():
 		var col_count = _get_column_count(row)
 		var displacement = h_step if _row_has_displacement(row) else 0.0
 		for col in col_count:
-			var x = col * h_step + displacement
+			var x = _rect.position.x + col * h_step + displacement
 			var y = get_start_y_pos() + row * v_step
 			var cell_rect = Rect2(x, y, platform_width, platform_height)
 			var cell = Cell.new(row, col, cell_rect)
-			print(cell.rect)
 			if cell_rect.position.y + cell_rect.size.y > _rect.end.y || cell_rect.position.y < _rect.position.y || cell_rect.position.x + cell_rect.size.x > _rect.end.x || cell_rect.position.x < _rect.position.x:
 				cell.is_disabled = true
 			row_cells.append(cell)
@@ -107,10 +106,10 @@ func _row_has_displacement(row: int) -> bool:
 	return (row % 2 == 0) == _first_row_displaced
 
 func _displ_row_size() -> int:
-	return int((_max_width - get_platform_width() - get_horizontal_step()) / (get_horizontal_step() * 2)) + 1
+	return int((_max_width - get_platform_width() * 2) / (get_horizontal_step())) + 1
 
 func _not_displ_row_size() -> int:
-	return int((_max_width - get_platform_width()) / (get_horizontal_step() * 2)) + 1
+	return int((_max_width - get_platform_width()) / (get_horizontal_step())) + 1
 
 func build(exit_point: DirectedPoint, exit_window: DirectedWindow, enter_point: DirectedPoint) -> DirectedPoint:
 	_find_exit_near(exit_point, exit_window)
@@ -121,19 +120,29 @@ func build(exit_point: DirectedPoint, exit_window: DirectedWindow, enter_point: 
 	return _calculate_exit_point(exit_point)
 	
 func _create_directed_path(entry_point: DirectedPoint, exit_point: DirectedPoint):
-	var entry_cell := _find_closest_cell(entry_point.get_cords())
-	var exit_cell := _find_closest_cell(exit_point.get_cords())
+	var new_enter_point
+	if exit_point.direction in [DirectionHelper.Directions.LEFT, DirectionHelper.Directions.RIGHT]:
+		new_enter_point = entry_point.get_cords() + Vector2(2, 3)
+	else:
+		new_enter_point = entry_point.get_cords() + Vector2(0, 2)
+	var entry_cell := _find_closest_cell(new_enter_point)
+	var exit_cell := _exit_cell
 
 	if !entry_cell or !exit_cell:
 		return
 
 	var bottom_cells := _cells[_cells.size() - 1].filter(func(c): return not c.is_disabled) as Array
 	bottom_cells.shuffle()
-	for start_cell in bottom_cells:
-		var success_to_entry := _bfs_path_to(start_cell, entry_cell)
-		var success_to_exit := _bfs_path_to(start_cell, exit_cell)
-		if success_to_entry and success_to_exit:
-			break 
+	var flag = false
+	for i in range(20):
+		if flag:
+			break
+		for start_cell in bottom_cells:
+			var success_to_entry := _bfs_path_to(start_cell, entry_cell)
+			var success_to_exit := _bfs_path_to(start_cell, _pre_exit_cell)
+			if success_to_entry and success_to_exit:
+				flag = true
+				break
 
 func _bfs_path_to(start: Cell, goal: Cell) -> bool:
 	var came_from = {}
@@ -167,8 +176,8 @@ func _find_closest_cell(target_pos: Vector2) -> Cell:
 	var result: Cell = null
 	for row in _cells:
 		for cell in row:
-			if cell.is_disabled:
-				continue
+			"""if cell.is_disabled:
+				continue"""
 			var center = cell.rect.position + cell.rect.size / 2
 			var dist = center.distance_to(target_pos)
 			if dist < min_dist:
@@ -203,6 +212,10 @@ func get_bottom_platforms() -> Array:
 # Внутренние методы реализации
 func _find_exit_near(exit_point: DirectedPoint, exit_window: DirectedWindow):
 	var exit_pos = exit_point.get_cords()
+	if exit_point.direction in [DirectionHelper.Directions.LEFT, DirectionHelper.Directions.RIGHT]:
+		exit_pos = exit_point.get_cords() + Vector2(2, 3)
+	else:
+		exit_pos = exit_point.get_cords() + Vector2(0, 2)
 	var min_dist := INF
 	var exit_row := _calculate_exit_row(exit_pos.y)
 	
@@ -214,7 +227,7 @@ func _find_exit_near(exit_point: DirectedPoint, exit_window: DirectedWindow):
 		var dist = abs(cell.rect.position.x + cell.rect.size.x/2 - exit_pos.x)
 		var valid = _is_cell_valid(cell, exit_window)
 		
-		if dist < min_dist && valid:
+		if dist < min_dist:
 			min_dist = dist
 			_exit_cell = cell
 			_pre_exit_cell = _find_pre_exit_cell(cell, exit_point)
@@ -236,8 +249,7 @@ func _bfs_search(start_cell: Cell):
 	var queue = [start_cell]
 	var visited = {}
 	var steps = 0
-	var max_depth = 4  # Максимальная глубина поиска
-	
+	var max_depth = 3  # Максимальная глубина поиска
 	while !queue.is_empty() and steps < max_depth:
 		var cell = queue.pop_front()
 		if visited.has(cell):
@@ -281,13 +293,16 @@ func _expand_platform(cell: Cell):
 		cell.rect.size.x += max_expansion
 
 func _calculate_exit_point(original_exit: DirectedPoint) -> DirectedPoint:
-	if _exit_cell && _pre_exit_cell:
+	'''if _exit_cell && _pre_exit_cell:
 		var x_pos = (_exit_cell.rect.position.x + _pre_exit_cell.rect.end.x) / 2
-		return DirectedPoint.new(
+		var point = DirectedPoint.new(
 			_rect,
 			original_exit.direction,
 			x_pos
 		)
+		printerr("Корды выхода которые считаются в calculate_exit_point")
+		printerr(point.get_cords())
+		return point'''
 	return original_exit
 
 # Вспомогательные методы
@@ -351,18 +366,18 @@ func _find_pre_exit_cell(exit_cell: Cell, exit_point: DirectedPoint) -> Cell:
 	var candidates = []
 	
 	# Проверяем ячейки в направлении выхода
-	if exit_dir == 2:  # Вправо
+	if exit_dir == 2:  # Влево
 		if exit_cell.column < _cells[exit_cell.row].size() - 1:
 			candidates.append(_cells[exit_cell.row][exit_cell.column + 1])
-	elif exit_dir == 3:  # Влево
+	elif exit_dir == 3:  # Вправо
 		if exit_cell.column > 0:
 			candidates.append(_cells[exit_cell.row][exit_cell.column - 1])
-	elif exit_dir == 0:
+	elif exit_dir == 0: # Вверх
 		if exit_cell.row < _cells.size() - 1:
 			candidates.append(_cells[exit_cell.row + 1][exit_cell.column if _cells[exit_cell.row + 1].size() > exit_cell.column else -1])
-	elif exit_dir == 1:
+	elif exit_dir == 1: # Вниз
 		if exit_cell.row > 0:
-			candidates.append(_cells[exit_cell.row - 1][exit_cell.column if _cells[exit_cell.row + 1].size() > exit_cell.column else -1])	
+			candidates.append(_cells[exit_cell.row - 1][exit_cell.column if _cells[exit_cell.row - 1].size() > exit_cell.column else -1])
 	
 	# Если нет кандидатов, ищем любых соседей
 	if candidates.is_empty():

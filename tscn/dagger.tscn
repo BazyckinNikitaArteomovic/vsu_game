@@ -1,6 +1,7 @@
-[gd_scene load_steps=73 format=3 uid="uid://h0xn4xle445g"]
+[gd_scene load_steps=75 format=3 uid="uid://h0xn4xle445g"]
 
 [ext_resource type="Texture2D" uid="uid://dmmt81m4odc64" path="res://assets/platno/mobs/Dagger Mush/Air attack.png" id="1_6o1v6"]
+[ext_resource type="Script" path="res://tscn/dagger.gd" id="1_ofvjt"]
 [ext_resource type="Texture2D" uid="uid://dnh0c07mjskum" path="res://assets/platno/mobs/Dagger Mush/attacks.png" id="2_gls8h"]
 [ext_resource type="Texture2D" uid="uid://drj2qsvurhfmu" path="res://assets/platno/mobs/Dagger Mush/throw.png" id="3_3gi8q"]
 [ext_resource type="Texture2D" uid="uid://cohnoyqdgt8yp" path="res://assets/platno/mobs/Dagger Mush/damaged.png" id="4_ngcb3"]
@@ -8,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://cswfeydsg1xet" path="res://assets/platno/mobs/Dagger Mush/idle.png" id="6_do8ud"]
 [ext_resource type="Texture2D" uid="uid://b8rqrkmd1r5q" path="res://assets/platno/mobs/Dagger Mush/run.png" id="7_7g6b7"]
 [ext_resource type="Texture2D" uid="uid://cnstheplbjprk" path="res://assets/platno/mobs/Dagger Mush/run fast.png" id="8_7oidv"]
+[ext_resource type="PackedScene" uid="uid://cf1a76wvlspqw" path="res://tscn/enemy_logic.tscn" id="9_n6cto"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_eid7r"]
 atlas = ExtResource("1_6o1v6")
@@ -490,13 +492,17 @@ animations = [{
 height = 22.92
 
 [node name="dagger" type="CharacterBody2D"]
+script = ExtResource("1_ofvjt")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(54.485, -39.845)
 sprite_frames = SubResource("SpriteFrames_6ueos")
-animation = &"idle"
+animation = &"run_fast"
 autoplay = "idle"
+frame_progress = 0.425313
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.05, -11.46)
 shape = SubResource("CapsuleShape2D_aw50o")
+
+[node name="EnemyLogic" parent="." instance=ExtResource("9_n6cto")]

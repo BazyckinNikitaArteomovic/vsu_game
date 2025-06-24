@@ -54,6 +54,7 @@ func generate_level(character, tilemap):
 		elif comp is DebugRegionComponent:
 			print("Drawing debug region: ", comp.region.rect)
 			_draw_debug_region(comp.region)
+	_draw_windows(components)
 	
 
 	# Спавн игрока
@@ -69,20 +70,30 @@ func _draw_platform(rect: Rect2):
 			tile_map.set_cell(0, Vector2i(x, y), 3, wall_tile)
 			#_add_wall_collision(x, y)
 
+func _draw_windows(components):
+	for i in components.size():
+		var comp = components[i]
+		if comp is DebugRegionComponent:
+			for cell in comp.region.exit_window.get_cells():
+				tile_map.set_cell(0, cell, 3, floor_tile)
+			if comp.region.exit_window.is_horizontal():
+				tile_map.set_cell(0, Vector2(1, 2) + comp.region.exit_window.get_cells()[1], 3, wall_tile)
+				tile_map.set_cell(0, Vector2(-1, 2) + comp.region.exit_window.get_cells()[1], 3, wall_tile)
+			else:
+				tile_map.set_cell(0, Vector2(1, 4) + comp.region.exit_window.get_cells()[1], 3, wall_tile)
+				tile_map.set_cell(0, Vector2(0, 4) + comp.region.exit_window.get_cells()[1], 3, wall_tile)
+				tile_map.set_cell(0, Vector2(-1, 4) + comp.region.exit_window.get_cells()[1], 3, wall_tile)
 func _draw_debug_region(region: DirectedRegion):
 	# Отрисовка границ для отладки
 	var rect := region.rect
 	for x in range(rect.position.x, rect.end.x):
 		tile_map.set_cell(0, Vector2i(x, rect.position.y), 3, wall_tile)
-		tile_map.set_cell(0, Vector2i(x, rect.end.y - 1), 3, wall_tile)
+		tile_map.set_cell(0, Vector2i(x, rect.end.y), 3, wall_tile)
 	
 	for y in range(rect.position.y, rect.end.y):
 		tile_map.set_cell(0, Vector2i(rect.position.x, y), 3, wall_tile)
-		tile_map.set_cell(0, Vector2i(rect.end.x - 1, y), 3, wall_tile)
-	for cell in region.exit_window.get_cells():
-		tile_map.set_cell(0, Vector2i(cell.x, cell.y), 3, floor_tile)
-	'''tile_map.set_cell(0, Vector2i(region.enter_point.position, rect.end.y), 3, floor_tile)
-	print(region.enter_point.direction)'''
+		tile_map.set_cell(0, Vector2i(rect.end.x, y), 3, wall_tile)
+	tile_map.set_cell(0, Vector2i(region.enter_point.get_cords()), 3, floor_tile)
 
 func _add_wall_collision(x: int, y: int):
 	var wall_pos := Vector2i(x, y)
@@ -97,7 +108,7 @@ func _spawn_player(components: Array, spawn_pos: Vector2, character: CharacterBo
 	print("Raw spawn pos: ", spawn_pos)
 	print("Level rect (pixels): ", level_rect)
 	
-	# 1. Проверяем, находится ли точка спавна внутри уровня в пикселях
+	# Проверяем, находится ли точка спавна внутри уровня в пикселях
 	if not level_rect.has_point(spawn_pos):
 		printerr("Spawn position outside level! Adjusting...")
 		
@@ -105,7 +116,7 @@ func _spawn_player(components: Array, spawn_pos: Vector2, character: CharacterBo
 		spawn_pos.x = clamp(spawn_pos.x, 0, level_rect.end.x)
 		spawn_pos.y = clamp(spawn_pos.y, 0, level_rect.end.y)
 	
-	# 2. Ищем ближайшую платформу
+	# Ищем ближайшую платформу
 	var closest_platform = null
 	var min_distance = INF
 	
@@ -118,8 +129,8 @@ func _spawn_player(components: Array, spawn_pos: Vector2, character: CharacterBo
 				min_distance = distance
 				closest_platform = comp.rect
 	
-	# 3. Устанавливаем позицию
-	if closest_platform:
+	# Устанавливаем позицию
+	if not closest_platform:
 		character.position = Vector2(
 			(closest_platform.position.x + closest_platform.size.x/2) * 32,
 			closest_platform.position.y * 32 - 50  # 20px выше платформы

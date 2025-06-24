@@ -9,7 +9,7 @@ enum {
 	
 }
 
-const mobs = ["Mob", "bomb droid"]
+const mobs = ["Mob", "bomb droid", "dual slicer", "dagger"]
 const SPEED = 600.0
 const JUMP_VELOCITY = -650.0
 var weapon = Weapon.new_weapon(1)
